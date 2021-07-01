@@ -28,12 +28,12 @@
         android:flipInterval="1500">
 
         <include
-            android:id="@+id/startLayout"
+            android:id="@+id/incStart"
             layout="@layout/start_layout" />
 
         <include
-            android:id="@+id/selectDesktop"
-            layout="@layout/select_desk" />
+            android:id="@+id/incGameOptions"
+            layout="@layout/game_options" />
 
     </ViewFlipper>
 

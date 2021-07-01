@@ -1,29 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/clGameOptions"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_choose_text"
         android:layout_marginTop="10dp"
+        android:src="@drawable/ic_choose_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ViewFlipper
+        android:id="@+id/vfGameOptions"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:inAnimation="@anim/flip_in"
-        android:outAnimation="@anim/flip_out"
-        android:id="@+id/vfGameOptions"
         android:autoStart="false"
-        android:flipInterval="1500">
+        android:flipInterval="1500"
+        android:inAnimation="@anim/flip_in"
+        android:outAnimation="@anim/flip_out">
 
-        <include layout="@layout/choose1_layout"/>
-        <include layout="@layout/choose2_layout"/>
+        <include
+            android:id="@+id/incOption1"
+            layout="@layout/choose1_layout" />
+
+        <include
+            android:id="@+id/incOption2"
+            layout="@layout/choose2_layout" />
 
     </ViewFlipper>
 </androidx.constraintlayout.widget.ConstraintLayout>
