@@ -16,24 +16,19 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.start_layout.*
 
 class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
+    private fun startAnimations() {
         val anim = AnimationUtils.loadAnimation(this, R.anim.bg_animation)
         bground.startAnimation(anim)
         startPicture.startAnimation(AnimationUtils.loadAnimation(this, R.anim.start_button))
 
-//        startHand.startAnimation(AnimationUtils.loadAnimation(this, R.anim.hand_animation))
-//        startHand
-
-//        val constraintSet = ConstraintSet()
-//        constraintSet.clone(this, R.layout.start_layout_animation)
-//        val transition = ChangeBounds()
-////        transition.setInterpolator(AccelerateDecelerateInterpolator())
-//        transition.setInterpolator(AnticipateInterpolator(1.0f))
-//        transition.setDuration(2000)
-//        TransitionManager.beginDelayedTransition(clStart, transition)
-//        constraintSet.applyTo(clStart)
+        startBackgound.setOnClickListener {
+            vfMainMenu.showNext()
+        }
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        startAnimations()
     }
 }
