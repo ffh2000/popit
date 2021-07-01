@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         //нажатие кнопки "Старт"
-        Log.d("MainActivityThread", "onCreate: current thread: ${Thread.currentThread()}")
         binding.incStart.ivStart.setOnClickListener {
             binding.vfMainMenu.showNext()
         }
@@ -28,7 +27,6 @@ class MainActivity : AppCompatActivity() {
         binding.incGameOptions.incOption1.ivDesk2.setOnClickListener(gameDeskSelectListener)
         binding.incGameOptions.incOption1.ivDesk3.setOnClickListener(gameDeskSelectListener)
         binding.incGameOptions.incOption1.ivDesk4.setOnClickListener(gameDeskSelectListener)
-
     }
 
     /**
