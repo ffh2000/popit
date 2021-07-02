@@ -1,5 +1,6 @@
 package ru.mstrike.popit
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,24 @@ import ru.mstrike.popit.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    /**
+     * Обработчик клика при выборе вида игровой доски
+     */
+    private val gameDeskSelectListener = { _: View ->
+        binding.incGameOptions.vfGameOptions.showNext()
+    }
+
+    /**
+     * Обработчик при нажатии кнопок для старта игры
+     */
+    private val gameStartListener = { _: View ->
+        val intent = Intent(this, GameActivity::class.java)
+        startActivity(intent)
+        finish()
+        overridePendingTransition(R.anim.flip_in, R.anim.flip_out)
+    }
+
 
     private fun startAnimations() {
         val anim = AnimationUtils.loadAnimation(this, R.anim.bg_animation)
@@ -27,13 +46,9 @@ class MainActivity : AppCompatActivity() {
         binding.incGameOptions.incOption1.ivDesk2.setOnClickListener(gameDeskSelectListener)
         binding.incGameOptions.incOption1.ivDesk3.setOnClickListener(gameDeskSelectListener)
         binding.incGameOptions.incOption1.ivDesk4.setOnClickListener(gameDeskSelectListener)
-    }
-
-    /**
-     * Обработчик клика при выборе вида игровой доски
-     */
-    private val gameDeskSelectListener = { _: View ->
-        binding.incGameOptions.vfGameOptions.showNext()
+        binding.incGameOptions.incOption2.selectLeve1.setOnClickListener(gameStartListener)
+        binding.incGameOptions.incOption2.selectLeve2.setOnClickListener(gameStartListener)
+        binding.incGameOptions.incOption2.selectLeve2.setOnClickListener(gameStartListener)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
