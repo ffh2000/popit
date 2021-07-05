@@ -2,8 +2,9 @@ package ru.mstrike.popit.common
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.*
+import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.widget.ImageViewCompat
 
 /**
  * Базовый класс для все игровых досок
@@ -13,14 +14,16 @@ class PopitDesktop(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : 
     /**
      * Игровая матрица в которой хранятся состояния ячеек
      */
-    var gameMatrix: Array<Array<Int>> = arrayOf()
+    var gameMatrix: Array<Array<Int>> = emptyArray()
+
+    private var viewModel: GameViewModel? = null
 
     /**
      * Матрица с элементами управления, отображаемыми на экране.
      * Размер матрицы и картинки элементов должны соответствовать размеру
      * и состояниям ячеек матрицы [gameMatrix]
      */
-    var viewsMatrix: Array<Array<View?>> = arrayOf()
+    var viewsMatrix: Array<Array<ImageView>> = emptyArray()
 
     constructor(context: Context, attrs: AttributeSet?): this(context, attrs, 0)
 
@@ -31,23 +34,21 @@ class PopitDesktop(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : 
     }
 
     /**
+     * Метод для привязки ViewModel к классу.
+     * Это что бы картинки не перезагружать при смене конфигурации
+     */
+    fun bindViewModel(viewModel: GameViewModel) {
+        this.viewModel = viewModel
+    }
+
+    /**
      * Метод инициализирует и заполняет 0 игровую матрицу [gameMatrix]
      * @param rows кол-во создаваемых строк в матрице
      * @param columns кол-во создаваемых колонок в матрице
      */
-    fun initGameMatrix(rows: Int, columns: Int) {
-        gameMatrix = arrayOf()
-        viewsMatrix = arrayOf()
-        for (i in 0 until rows) {
-            val a = arrayOf<Int>()
-            val v = arrayOf<View?>()
-            for (j in 0 until columns) {
-                a[j] += 0
-                v[j] = null
-            }
-            gameMatrix += a
-            viewsMatrix += v
-        }
+    private fun initGameMatrix(rows: Int, columns: Int) {
+        gameMatrix = Array(rows) { Array(columns) { 0 } }
+        viewsMatrix = Array(rows) { Array(columns) { ImageView(context) } }
     }
 
 }
