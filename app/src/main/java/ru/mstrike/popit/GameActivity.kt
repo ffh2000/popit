@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
 import android.view.View
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import ru.mstrike.popit.common.GameViewModel
 import ru.mstrike.popit.common.PopitDesktop
 
@@ -23,14 +25,19 @@ class GameActivity : AppCompatActivity() {
     /**
      * Игровая доска
      */
-    val popitDesktop by lazy { PopitDesktop(this) }
+    val popitDesktop by lazy {
+        PopitDesktop(this).apply {
+            val d = resources.getDrawable(R.drawable.ic_desk3)
+            gameViewModel.desktopBackground = d
+            bindViewModel(gameViewModel)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
         rootView = findViewById(R.id.root)
         popitDesktop.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT)
-        popitDesktop.bindViewModel(gameViewModel)
         rootView.addView(popitDesktop)
     }
 }

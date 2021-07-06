@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.widget.ImageViewCompat
 
 /**
@@ -39,6 +40,7 @@ class PopitDesktop(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : 
      */
     fun bindViewModel(viewModel: GameViewModel) {
         this.viewModel = viewModel
+        background = viewModel.desktopBackground
     }
 
     /**
@@ -47,7 +49,7 @@ class PopitDesktop(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : 
      * @param columns кол-во создаваемых колонок в матрице
      */
     private fun initGameMatrix(rows: Int, columns: Int) {
-        gameMatrix = Array(rows) { Array(columns) { 0 } }
+        gameMatrix = Array(rows) { Array(columns) { 1 } }
         viewsMatrix = Array(rows) { Array(columns) { ImageView(context) } }
     }
 
