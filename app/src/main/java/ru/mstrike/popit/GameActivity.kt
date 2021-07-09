@@ -27,9 +27,12 @@ class GameActivity : AppCompatActivity() {
      */
     val popitDesktop by lazy {
         PopitDesktop(this).apply {
-            val d = resources.getDrawable(R.drawable.ic_desk3)
-            gameViewModel.desktopBackground = d
+//            val d = resources.getDrawable(R.drawable.ic_desk3)
+//            gameViewModel.desktopBackground = d
             bindViewModel(gameViewModel)
+//            var parser = assets.openXmlResourceParser("game1.xml")
+            var parser = assets.open("game1.xml")
+            loadGame("game1.xml")
         }
     }
 
