@@ -1,17 +1,24 @@
+package ru.mstrike.popit.common.PopitDesktop
+
+import android.annotation.SuppressLint
 import ru.mstrike.popit.common.GameViewModel
 
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import org.xmlpull.v1.XmlPullParser
 import com.google.gson.Gson
+import ru.mstrike.popit.R
 import ru.mstrike.popit.models.PopitDesktopModel
+import java.lang.Exception
 
 /**
  * Базовый класс для все игровых досок
  */
-class PopitDesktop(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : ConstraintLayout(context, attrs, defStyleAttr, defStyleRes) {
+class PopitDesktop(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) :
+    RelativeLayout(context, attrs, defStyleAttr, defStyleRes) {
 
     /**
      * Игровая матрица в которой хранятся состояния ячеек
@@ -39,6 +46,7 @@ class PopitDesktop(context: Context, attrs: AttributeSet?, defStyleAttr: Int, de
     constructor(context: Context): this(context, null)
 
     init {
+        background = resources.getDrawable(R.drawable.ic_desk3)
         initGameMatrix(4, 4)
     }
 
@@ -70,24 +78,32 @@ class PopitDesktop(context: Context, attrs: AttributeSet?, defStyleAttr: Int, de
         configuration = Gson().fromJson(fv, PopitDesktopModel::class.java)
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun loadBackground() {
+        try {
+            val res = resources.getIdentifier(configuration?.backgroundResourceName, "drawable", context.packageName)
+            background = resources.getDrawable(res)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            background = resources.getDrawable(R.drawable.ic_desk3)
+        }
+    }
+
     /**
      * Метод загружает из каталога assets указанную игру в файле xml
      */
     fun loadGame(fileName: String) {
         assetsOpenJson(fileName)
-        configuration?.let { configuration ->
-            val res = resources.getIdentifier(configuration.backgroundResourceName, "drawable", context.packageName)
-            background = resources.getDrawable(res)
-        }
+        loadBackground()
     }
 
     /**
-     * Метод перекрыт что бы поддерживать пропорции размеров поизображению из [background]
+     * Метод перекрыт что бы поддерживать пропорции размеров по изображению из [background]
      */
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         if (background != null) {
-            var w = MeasureSpec.getSize(widthMeasureSpec) - 100
-            var h = MeasureSpec.getSize(heightMeasureSpec) - 100
+            var w = MeasureSpec.getSize(widthMeasureSpec)
+            var h = MeasureSpec.getSize(heightMeasureSpec)
             setMeasuredDimension(w, h)
         } else {
             setMeasuredDimension(widthMeasureSpec, heightMeasureSpec)
