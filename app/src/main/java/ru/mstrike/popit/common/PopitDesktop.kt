@@ -4,16 +4,14 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.graphics.drawable.toDrawable
-import androidx.core.widget.ImageViewCompat
 import org.xmlpull.v1.XmlPullParser
-import org.xmlpull.v1.XmlPullParserFactory
-import java.io.FileInputStream
+import com.google.gson.Gson
+import ru.mstrike.popit.models.PopitDesktopModel
 
 /**
  * Базовый класс для все игровых досок
  */
-class PopitDesktop(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : ConstraintLayout(context, attrs, defStyleAttr) {
+class PopitDesktop(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : ConstraintLayout(context, attrs, defStyleAttr, defStyleRes) {
 
     /**
      * Игровая матрица в которой хранятся состояния ячеек
@@ -29,7 +27,14 @@ class PopitDesktop(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : 
      */
     var viewsMatrix: Array<Array<ImageView>> = emptyArray()
 
-    constructor(context: Context, attrs: AttributeSet?): this(context, attrs, 0)
+    /**
+     * Конфигурация, загруженная из файла
+     */
+    var configuration: PopitDesktopModel? = null
+
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int): this(context, attrs, defStyleAttr, 0)
+
+    constructor(context: Context, attrs: AttributeSet?): this(context, attrs, 0, 0)
 
     constructor(context: Context): this(context, null)
 
@@ -57,17 +62,35 @@ class PopitDesktop(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : 
     }
 
     /**
+     * Метод открывает из папки assest xml-файл и возвращает на ссылку на парсер для работы с ним
+     * [XmlPullParser]
+     */
+    private fun assetsOpenJson(fileName: String) {
+        val fv = context.assets.open("$fileName").reader()
+        configuration = Gson().fromJson(fv, PopitDesktopModel::class.java)
+    }
+
+    /**
      * Метод загружает из каталога assets указанную игру в файле xml
      */
-    fun loadGame(xmlFileName: String) {
-        XmlPullParserFactory.newInstance().apply {
-//            var parser = context.assets.openXmlResourceParser("1.svg")
-            var parser = context.assets.openXmlResourceParser("$xmlFileName")
-            while (parser.eventType == XmlPullParser.START_TAG && parser.name == "game") {
-
-            }
-            parser.next()
+    fun loadGame(fileName: String) {
+        assetsOpenJson(fileName)
+        configuration?.let { configuration ->
+            val res = resources.getIdentifier(configuration.backgroundResourceName, "drawable", context.packageName)
+            background = resources.getDrawable(res)
         }
     }
 
+    /**
+     * Метод перекрыт что бы поддерживать пропорции размеров поизображению из [background]
+     */
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        if (background != null) {
+            var w = MeasureSpec.getSize(widthMeasureSpec) - 100
+            var h = MeasureSpec.getSize(heightMeasureSpec) - 100
+            setMeasuredDimension(w, h)
+        } else {
+            setMeasuredDimension(widthMeasureSpec, heightMeasureSpec)
+        }
+    }
 }
