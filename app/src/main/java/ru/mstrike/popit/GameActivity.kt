@@ -8,7 +8,6 @@ import android.view.View
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import ru.mstrike.popit.common.GameViewModel
-import ru.mstrike.popit.common.PopitDesktop
 
 class GameActivity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-наверное package ru.mstrike.popit.common
+import ru.mstrike.popit.common.GameViewModel
 
 import android.content.Context
 import android.util.AttributeSet
